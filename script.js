@@ -3,6 +3,8 @@
 // - used identifier with # inside brackets
 
 const btn = document.getElementById("btn");
+const toDoList = [];
+
 
 function enterTasks(){
     const inputValue = document.getElementById("input");
@@ -12,10 +14,14 @@ function enterTasks(){
         inputValue.focus();
     }
     else{
-        console.log(inputValue.value);
+        toDoList.push(inputValue.value);
         emptyInput.innerHTML = "";
     }
+    document.querySelector(".list").innerHTML = toDoList.map((e)=>{
+        return `<p>${e}</p>`;
+    }).join(''); //if the join is removed the li elements are joined by a comma
 }
+
 
 btn.addEventListener("click", enterTasks);
 
