@@ -56,40 +56,118 @@ const houses = [
 
         ]
     },
+    {
+        name: "House Lannister",
+        sigil: "https://toppng.com/uploads/preview/house-lannister-sigil-clipart-tywin-lannister-a-game-richard-the-lionheart-sigil-11562909715eoq4jdnrg0.png",
+        sons:[
+            {
+                name:"Tywin",
+                sons:[
+                    {
+                        name:"Jaime",
+                        sons:[],
+                    },
+                    {
+                        name: "Cersei",
+                        sons:[
+                            {
+                                name: "Joffrey",
+                                sons:[]
+                            },
+                            {   
+                                name: "Myrcella",
+                                sons:[]
+                            },
+                            {
+                                name: "Tommen",
+                                sons:[]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        name: "House Baratheon",
+        sons:[
+            {
+                name: "Ormund",
+                sons:[
+                    {
+                        name: "Steffon",
+                        sons:[
+                            {
+                                name: "Robert",
+                                sons:[
+                                    {
+                                        name: "Joffrey",
+                                        sons:[]
+                                    },
+                                    {   
+                                        name: "Myrcella",
+                                        sons:[]
+                                    },
+                                    {
+                                        name: "Tommen",
+                                        sons:[]
+                                    }
+                                ]
+                            },
+                            {
+                                name: "Stannis",
+                                sons:[
+                                    {
+                                        name: "Shireen",
+                                        sons:[]
+                                    }
+                                ]
+                            },
+                            {
+                                name: "Renly",
+                                sons:[]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+
     
     
 ]
 
-const housesContainer = document.querySelector(".housesContainer");
-housesContainer.innerHTML = houses.map((item)=>{
-    return `
-        <h2 class="house title"><img src="${item.sigil}" alt="" srcset="" width="70px">${item.name}</h2>    
-    `
-})
+function renderFamilyTree(treeData, parentElement) {
+    const ul = document.createElement("ul");
 
-function expandHouses(houseName){
-    const index = houses.findIndex(item=>item.name==houseName);
-    displaySons(houses[index], housesContainer);
-}
+    treeData.forEach(person => {
+        const li = document.createElement("li");
+        const span = document.createElement("span");
 
-function displaySons(obj, parentDiv){
-    console.log(obj);
-    if(obj.sons.length>0){
-        obj.sons.forEach((item)=>{
-            const newDiv = document.createElement("div");
-            newDiv.innerText = item.name;
-            parentDiv.append(newDiv);
-            console.log(item);
-            newDiv.addEventListener("click", (e)=>{
-                e.stopPropagation();
-                displaySons(item, newDiv);
-            })
-        })
-    }
-}
+        span.textContent = person.name;
 
-document.querySelectorAll(".title").forEach((item)=>{
-    item.addEventListener("click", ()=>{
-        expandHouses(item.innerText);
+        span.addEventListener("click", () => {
+            const childList = li.querySelector("ul");
+
+            if (childList) {
+                li.removeChild(childList);
+            } else if (person.sons.length > 0) {
+                renderFamilyTree(person.sons, li);
+            }
+        });
+
+        li.appendChild(span);
+
+        if (person.sons.length > 0) {
+            renderFamilyTree(person.sons, li);
+        }
+
+        ul.appendChild(li);
     });
-})
+
+    parentElement.appendChild(ul);
+}
+
+const familyTreeContainer = document.getElementById("familyTree");
+renderFamilyTree(houses, familyTreeContainer);
