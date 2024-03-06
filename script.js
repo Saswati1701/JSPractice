@@ -24,6 +24,30 @@ const allTasks = [
         status: "incomplete" 
     }
 ]
+const completeTasks = [
+    {
+        id: 1709553882957,
+        task: "JavaScript",
+        description: "Complete building to-do list",
+    },
+    {
+        id: 1709553882959,
+        task: "Metallurgy",
+        description: "Revise class notes",
+    }
+]
+const incompleteTasks = [
+    {
+        id: 1709553882955,
+        task: "DSA",
+        description: "Complete 5 problems of Graph",
+    },
+    {
+        id: 1709553882961,
+        task: "Assignments",
+        description: "Complete Lab journal",
+    }
+]
 const btn = document.querySelector("#btn");
 
 function addTasks(){
@@ -39,9 +63,8 @@ function addTasks(){
             id: Date.now(),
             title: "untitled",
             description: description.value,
-            status: "incomplete",
         }
-        allTasks.push(newTask);
+        incompleteTasks.push(newTask);
         displayTasks();
     }
     document.querySelectorAll('input[name="taskCheckbox"]').forEach((checkbox) => {
@@ -50,8 +73,6 @@ function addTasks(){
 
 }
 function displayTasks(){
-    const completeTasks = allTasks.filter(task=>task.status==="complete");
-    const incompleteTasks = allTasks.filter(task=>task.status==="incomplete");
     const completeTasksList = document.querySelector(".completeTasksList");
     const incompleteTasksList = document.querySelector(".incompleteTasksList");
 
@@ -74,14 +95,24 @@ function displayTasks(){
 }
 function toggleTaskStatus(){
     const taskId = this.id;
-    const index = allTasks.findIndex(task=> task.id == taskId);
-    const newStatus = this.checked? "complete" : "incomplete";
-    allTasks[index].status = newStatus;
-    console.log(allTasks[index]);
+    console.log(taskId);
+    if(this.checked){
+        let index = incompleteTasks.findIndex(task=> task.id == taskId);
+        let tempTask = incompleteTasks[index];
+        incompleteTasks.splice(index, 1);
+        completeTasks.push(tempTask);
+    }
+    else{
+        let index = completeTasks.findIndex(task=> task.id == taskId);
+        let tempTask = completeTasks[index];
+        completeTasks.splice(index, 1);
+        incompleteTasks.push(tempTask);
+    }
     displayTasks();
     document.querySelectorAll('input[name="taskCheckbox"]').forEach((checkbox) => {
         checkbox.addEventListener('change', toggleTaskStatus);
     });
+
 }
 displayTasks();
 btn.addEventListener("click", addTasks);
