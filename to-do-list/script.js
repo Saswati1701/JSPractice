@@ -58,14 +58,22 @@ function displayTasks(){
     completeTasksList.innerHTML = completeTasks.map((task)=>{
         return `
             <div>
-                <p><input type="checkbox" name="taskCheckbox" id="${task.id}" checked>${task.description}
+                <p>
+                    <input type="checkbox" name="taskCheckbox" id="${task.id}" checked>
+                    ${task.description}
+                    <span class="editTasks"><img src="assets/editing.png" alt="" srcset="" height="13px"></span>
+                </p>
             </div>
         `
     }).join('')
     incompleteTasksList.innerHTML = incompleteTasks.map((task)=>{
         return `
             <div>
-                <p><input type="checkbox" name="taskCheckbox" id="${task.id}">${task.description}</p>
+                <p>
+                    <input type="checkbox" name="taskCheckbox" id="${task.id}" >
+                    ${task.description}
+                    <span class="editTasks"><img src="assets/editing.png" alt="" srcset="" height="13px"></span>
+                </p>
             </div>
         `
     }).join('')
@@ -82,6 +90,10 @@ function toggleTaskStatus(){
     document.querySelectorAll('input[name="taskCheckbox"]').forEach((checkbox) => {
         checkbox.addEventListener('change', toggleTaskStatus);
     });
+}
+
+function editTasks(){
+    const editTasks = document.querySelector(".editTasks");
 }
 displayTasks();
 btn.addEventListener("click", addTasks);
