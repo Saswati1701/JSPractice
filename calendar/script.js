@@ -24,8 +24,6 @@ const tbody = document.querySelector("tbody");
 
 function setMonthAndYear(){
     tbody.textContent = "";
-    console.log(monthsList.value);
-    console.log(yearsList.value);
     const monthChoice = monthsList.value;
     const yearChoice = yearsList.value;
     let noOfDays;
@@ -34,8 +32,9 @@ function setMonthAndYear(){
         if(monthChoice === 'Apr' || monthChoice === 'Jun' || monthChoice === 'Sep' || monthChoice === 'Nov'){
             noOfDays = 30;
         }
-        else if(monthChoice=="Feb"){
-            noOfDays = (yearChoice/4 == 0)? 29 : 28;
+        else if(monthChoice=== 'Feb'){
+            const year = parseInt(yearChoice);
+            noOfDays = year%4 == 0 ? 29 : 28;
         }
         else noOfDays = 31;
         
@@ -61,7 +60,6 @@ function firstDayofMonth(month, year){
     const startDay = startDate.getDay();
     let currDate = new Date(`${month} 01 ${year}`);
     let diffInDays = (currDate-startDate)/(1000*60*60*24)
-    console.log((startDay+diffInDays)%7);
     return (startDay+diffInDays)%7;
 
 }
@@ -69,7 +67,6 @@ function firstDayofMonth(month, year){
 function displayMonth(noOfDays, initialDay){
     let dayCount = 1;
     noOfDays += initialDay;
-    console.log(noOfDays);
     while(dayCount<=noOfDays){
         const tr = document.createElement("tr");            
         for(let i=0; i<7; i++){
@@ -84,5 +81,4 @@ function displayMonth(noOfDays, initialDay){
         tbody.append(tr);
     } 
 }
-
-// displayMonth(31, firstDayofMonth("Feb", 2024));
+ 
