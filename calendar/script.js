@@ -20,10 +20,28 @@ const yearEnd = 2030;
 for(let i=yearStart; i<=yearEnd; i++){
     createDropDown(yearsList, i);
 }
+const tbody = document.querySelector("tbody");
 
 function setMonthAndYear(){
+    tbody.textContent = "";
     console.log(monthsList.value);
     console.log(yearsList.value);
+    const monthChoice = monthsList.value;
+    const yearChoice = yearsList.value;
+    let noOfDays;
+
+    if(monthChoice && yearChoice){
+        if(monthChoice === 'Apr' || monthChoice === 'Jun' || monthChoice === 'Sep' || monthChoice === 'Nov'){
+            noOfDays = 30;
+        }
+        else if(monthChoice=="Feb"){
+            noOfDays = (yearChoice/4 == 0)? 29 : 28;
+        }
+        else noOfDays = 31;
+        
+        displayMonth(noOfDays, firstDayofMonth(monthChoice, yearChoice));
+    }
+
 }
 monthsList.addEventListener("change", setMonthAndYear);
 yearsList.addEventListener("change", setMonthAndYear);
@@ -52,7 +70,6 @@ function displayMonth(noOfDays, initialDay){
     let dayCount = 1;
     noOfDays += initialDay;
     console.log(noOfDays);
-    const tbody = document.querySelector("tbody");
     while(dayCount<=noOfDays){
         const tr = document.createElement("tr");            
         for(let i=0; i<7; i++){
@@ -68,4 +85,4 @@ function displayMonth(noOfDays, initialDay){
     } 
 }
 
-displayMonth(31, firstDayofMonth("March", 2024));
+// displayMonth(31, firstDayofMonth("Feb", 2024));
