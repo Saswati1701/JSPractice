@@ -8,7 +8,7 @@ function createDropDown(list, value){
 
 //creating the months dropdown
 const monthsList = document.querySelector("#monthsList");
-const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 months.forEach((month)=>{
     createDropDown(monthsList, month);
 })
@@ -28,19 +28,44 @@ function setMonthAndYear(){
 monthsList.addEventListener("change", setMonthAndYear);
 yearsList.addEventListener("change", setMonthAndYear);
 
-let days = 1;
-const tbody = document.querySelector("tbody");
-while(days<=31){
-    const tr = document.createElement("tr");
-    for(let i=0; i<7; i++){
-        if(days<=31){
-            const td = document.createElement("td");
-            td.setAttribute("class", "cell");
-            td.textContent = days;
-            tr.append(td);
-        }
-        days++;
-    }
-    tbody.append(tr);
+const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+const thead = document.querySelector("thead");
+days.forEach((day) =>{
+    const th = document.createElement("th");
+    th.textContent = day;
+    th.setAttribute("class", "cell");
+
+    thead.append(th);
+})
+
+function firstDayofMonth(month, year){
+    const startDate = new Date("Jan 01 2020");
+    const startDay = startDate.getDay();
+    let currDate = new Date(`${month} 01 ${year}`);
+    let diffInDays = (currDate-startDate)/(1000*60*60*24)
+    console.log((startDay+diffInDays)%7);
+    return (startDay+diffInDays)%7;
+
 }
 
+function displayMonth(noOfDays, initialDay){
+    let dayCount = 1;
+    noOfDays += initialDay;
+    console.log(noOfDays);
+    const tbody = document.querySelector("tbody");
+    while(dayCount<=noOfDays){
+        const tr = document.createElement("tr");            
+        for(let i=0; i<7; i++){
+            if(dayCount<=noOfDays){
+                const td = document.createElement("td");
+                td.setAttribute("class", "cell");
+                td.textContent = dayCount<=initialDay? "" : dayCount-initialDay;
+                tr.append(td);
+            }
+            dayCount++;
+        }
+        tbody.append(tr);
+    } 
+}
+
+displayMonth(31, firstDayofMonth("March", 2024));
